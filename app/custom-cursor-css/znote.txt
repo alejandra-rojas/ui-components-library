@@ -1,0 +1,68 @@
+CSS Trick ☝️
+
+You can use :has() to power custom cursors 😎
+
+:root:has([href^=mailto]:hover) .custom-cursor {
+  --active: 1;
+}
+
+Create a cursor element and update its position with JavaScript, show it using :has() ✨
+
+So many possibilities with this pattern 🤩
+
+Check it out! 👇
+
+Love this pattern. The trick is you start with a "custom cursor" element that acts like a holding element for your different cursors. Important to make sure it doesn't react to pointer events!
+
+.custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  left: calc(var(--x, -100) * 1px);
+  top: calc(var(--y, -100) * 1px);
+  translate: -50% -50%;
+}
+
+Note how the default values are -100. This means the cursor isn't sitting top left when you open the page. As soon as the position gets updated, you'll see the cursor. You need a little JavaScript snippet like this to pass the pointer position to CSS 🤙
+
+const update = ({ x, y }) => {
+  document​.documentElement​.style.setProperty('--x', x)
+  documen​t​.documentElement​.style.setProperty('--y', y)
+}
+
+document.body.addEventListener('pointermove', update)
+
+Now the fun part! Take the "Say hello" cursor. By default, you clip it down to a smaller size and make it invisible with opacity and color 👀
+
+.custom-cursor {
+  color: hsl(0 0% 0% / var(--active, 0));
+  opacity: var(--intent, 0);
+  transition: opacity 0.2s, clip-path 0.5s, color 0.2s;
+  pointer-events: none;
+  clip-path: inset(
+    calc(50% - 12px)
+    calc(50% - 12px)
+    calc(50% - 12px)
+    calc(50% - 12px)
+    round 100px
+  );
+}
+
+You activate it when hovering a "mailto" link ✉️ And show the smaller version when hovering the container. In this case, the header 🤓
+
+:root:has(header:hover) .custom-cursor {
+  --intent: 1;
+}
+:root:has([href^=mailto]:hover) .custom-cursor {
+  --active: 1;
+  clip-path: inset(0 0 0 0 round 100px);
+}
+
+Cool trick here to leverage attribute selectors for this. The "^=" selector means "attribute starts with" 😎
+
+That's it! As soon as you take your pointer off, the :has() condition is no longer active, so the custom cursor will shrink back down and disappear ⭐️ You can then take this further and create things like the image tooltips, etc.
+
+Really cool! CSS. The gift that keeps on giving.
+
+
+//https://twitter.com/jh3yy/status/1755769485384929391
+//https://codepen.io/Alejandra-Rojas/pen/qBvQqKR

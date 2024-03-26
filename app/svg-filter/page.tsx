@@ -1,0 +1,58 @@
+import "./styles.css";
+
+import React from "react";
+
+function Page() {
+  return (
+    <>
+      <div className="container">
+        <div>The quick brown fox jumps over the lazy dog</div>
+        <div className="right">The quick brown fox jumps over the lazy dog</div>
+        <div className="right">The quick brown fox jumps over the lazy dog</div>
+        <div className="right">The quick brown fox jumps over the lazy dog</div>
+        <div id="blurs">
+          {[...Array(80)].map((_, index) => (
+            <span key={index} className="blur"></span>
+          ))}
+        </div>
+        <div className="filt">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            id="svgNoise"
+            className="u-svg-none"
+          >
+            <defs>
+              <filter
+                id="noiseEffect2"
+                filterUnits="objectBoundingBox"
+                x="-20%"
+                y="-20%"
+                width="140%"
+                height="140%"
+              >
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.015"
+                  numOctaves="1"
+                  seed="1"
+                  stitchTiles="stitch"
+                  result="particle"
+                ></feTurbulence>
+                <feDisplacementMap
+                  scale="110.1"
+                  in="SourceGraphic"
+                  in2="particle"
+                  xChannelSelector="R"
+                  yChannelSelector="G"
+                ></feDisplacementMap>
+              </filter>
+            </defs>
+          </svg>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Page;
